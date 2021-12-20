@@ -1,5 +1,6 @@
 package de.gessnerfl.fakesmtp.config;
 
+import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class FakeSmtpConfigurationProperties {
     private InetAddress bindAddress;
     private Authentication authentication;
     private String filteredEmailRegexList;
+    private String filteredSubjectRegexList;
     private boolean forwardEmails = false;
 
     @NotNull
@@ -60,6 +62,14 @@ public class FakeSmtpConfigurationProperties {
 
     public void setFilteredEmailRegexList(String filteredEmailRegexList) {
         this.filteredEmailRegexList = filteredEmailRegexList;
+    }
+
+    public String getFilteredSubjectRegexList() {
+        return filteredSubjectRegexList;
+    }
+
+    public void setFilteredSubjectRegexList(String filteredSubjectRegexList) {
+        this.filteredSubjectRegexList = filteredSubjectRegexList;
     }
 
     public boolean isForwardEmails() {

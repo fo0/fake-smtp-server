@@ -19,11 +19,16 @@ public class EmailFilter {
     this.logger = logger;
   }
 
-  public boolean ignore(String sender, String recipient){
-    if(!StringUtils.hasText(this.fakeSmtpConfigurationProperties.getFilteredEmailRegexList())){
-      return false;
+  public boolean ignore(String sender, String recipient, String subject) {
+    if(StringUtils.hasText(this.fakeSmtpConfigurationProperties.getFilteredEmailRegexList())){
+      return ignoreParticipant(sender) || ignoreParticipant(recipient);
     }
-    return ignoreParticipant(sender) || ignoreParticipant(recipient);
+
+    if(StringUtils.hasText(this.fakeSmtpConfigurationProperties.getFilteredSubjectRegexList())){
+      return ignoreSubject(subject);
+    }
+
+    return false;
   }
 
   private boolean ignoreParticipant(String participant) {
@@ -39,4 +44,20 @@ public class EmailFilter {
     }
     return false;
   }
+
+  private boolean ignoreSubject(String subject) {
+    logger.debug("incoming subject: {} | matcher: {}", subject, this.fakeSmtpConfigurationProperties.getFilteredSubjectRegexList());
+    if(StringUtils.hasText(subject)){
+      try{
+        if(Arrays.stream(this.fakeSmtpConfigurationProperties.getFilteredSubjectRegexList().split(",")).anyMatch(subject::matches)){
+          logger.info("subject '{}' matches a filtered subject regex entry. Email will be filtered.", subject);
+          return true;
+        }
+      }catch(RuntimeException e){
+        logger.error("Unable to check subject '{}' against configured email filteredEmailRegexList '{}'", subject, this.fakeSmtpConfigurationProperties.getFilteredSubjectRegexList(), e);
+      }
+    }
+    return false;
+  }
+
 }

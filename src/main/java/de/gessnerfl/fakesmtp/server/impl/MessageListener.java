@@ -2,6 +2,7 @@ package de.gessnerfl.fakesmtp.server.impl;
 
 import de.gessnerfl.fakesmtp.repository.EmailRepository;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,13 @@ public class MessageListener implements SimpleMessageListener {
         logger.info("Received email from {} for {}", sender, recipient);
 
         var rawData = new RawData(sender, recipient, IOUtils.toByteArray(data));
+        String subject = Strings.EMPTY;
+        try {
+          subject = rawData.toMimeMessage().getSubject();
+        } catch (Exception e){
+        }
 
-        if(!emailFilter.ignore(sender,recipient)) {
+        if(!emailFilter.ignore(sender,recipient,subject)) {
             var email = emailFactory.convert(rawData);
             emailRepository.save(email);
             messageForwarder.forward(rawData);

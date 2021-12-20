@@ -28,39 +28,39 @@ class EmailFilterTest {
   @Test
   void emptyFilter(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn(null);
-    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2));
+    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
 
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn("      ");
-    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2));
+    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 
   @Test
   void noneMatchingFilter(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn(".*@google.com");
-    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1,TEST_EMAIL_ADDRESS_2));
+    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 
   @Test
   void matchingFilter(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn(".*@doe.com");
-    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1,TEST_EMAIL_ADDRESS_2));
+    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 
   @Test
   void matchingFilterMultipleRegexAnyMatch(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn(".*@other\\.com,jane@.*");
-    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1,TEST_EMAIL_ADDRESS_2));
+    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 
   @Test
   void matchingFilterMultipleRegexAllMatch(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn(".*@doe\\.com,jane@.*");
-    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1,TEST_EMAIL_ADDRESS_2));
+    assertTrue(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 
   @Test
   void invalidRegex(){
     when(fakeSmtpConfigurationProperties.getFilteredEmailRegexList()).thenReturn("****");
-    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1,TEST_EMAIL_ADDRESS_2));
+    assertFalse(sut.ignore(TEST_EMAIL_ADDRESS_1, TEST_EMAIL_ADDRESS_2, ""));
   }
 }

@@ -8,7 +8,7 @@
 fork from https://github.com/gessnerfl/fake-smtp-server
 
 # additional features
-- filter mails matching the subject
+- filter mails by matching the subject: variable: filteredSubjectRegexList (same like existing: filteredEmailRegexList)
 
 # docker-compose
 ```yml

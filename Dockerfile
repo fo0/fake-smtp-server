@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:x86_64-alpine-jdk-11.0.13_8
+FROM adoptopenjdk/openjdk11:alpine-slim
 
 ARG APP_VERSION
 
@@ -8,7 +8,7 @@ EXPOSE 5080
 EXPOSE 5081
 EXPOSE 5025
 
-ADD build/libs/fake-smtp-server-$APP_VERSION.jar /opt/fake-smtp-server.jar
+COPY build/libs/fake-smtp-server-*-SNAPSHOT.jar /opt/fake-smtp-server.jar
 RUN ["touch", "/opt/fake-smtp-server.jar"]
 ENV JAVA_OPTS=""
 ENTRYPOINT exec java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /opt/fake-smtp-server.jar

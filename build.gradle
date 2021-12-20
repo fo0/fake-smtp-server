@@ -21,8 +21,8 @@ group = 'de.gessnerfl'
 description = """Fake SMTP Server :: Simple SMTP Server which stores emails in memory and lists email in a web ui"""
 project.version = scmVersion.version
 
-ext.scmUrl = 'git@github.com:gessnerfl/fake-smtp-server.git'
-ext.projectUrl = 'https://github.com/gessnerfl/fake-smtp-server'
+ext.scmUrl = 'git@github.com:fo0/fake-smtp-server.git'
+ext.projectUrl = 'https://github.com/fo0/fake-smtp-server'
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -65,25 +65,4 @@ gradle.projectsEvaluated {
 
 springBoot {
 	buildInfo()
-}
-
-sonarqube {
-	properties {
-		property 'sonar.host.url', 'https://sonarcloud.io'
-		property 'sonar.organization', 'gessnerfl-github'
-		property "sonar.projectName", "Fake SMTP Server"
-		property "sonar.projectKey", "de.gessnerfl.fake-smtp-server"
-	}
-}
-
-test {
-	useJUnitPlatform()
-	finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-	dependsOn test
-	reports {
-		xml.enabled true
-	}
 }
