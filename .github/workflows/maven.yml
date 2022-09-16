@@ -28,7 +28,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v5
         name: Build & push Docker image
         with:
-          image: fo0me/spring-boot-admin
+          image: fo0me/fake-smtp-server
           tags: ${{steps.date.outputs.date}}, latest
           registry: docker.io
           username: ${{ secrets.DOCKER_ACTOR }}
