@@ -8,24 +8,25 @@ import org.springframework.stereotype.Service;
 import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
 
-@Profile("default")
+@Profile({"default", "docker"})
 @Service
 public class SmtpServerFactoryImpl implements SmtpServerFactory {
 
-    private final MessageListener messageListener;
-    private final SmtpServerConfigurator configurator;
+  private final MessageListener messageListener;
+  private final SmtpServerConfigurator configurator;
 
-    @Autowired
-    public SmtpServerFactoryImpl(MessageListener messageListener, SmtpServerConfigurator configurator) {
-        this.messageListener = messageListener;
-        this.configurator = configurator;
-    }
+  @Autowired
+  public SmtpServerFactoryImpl(MessageListener messageListener,
+                               SmtpServerConfigurator configurator) {
+    this.messageListener = messageListener;
+    this.configurator = configurator;
+  }
 
-    @Override
-    public SmtpServer create() {
-        var simpleMessageListenerAdapter = new SimpleMessageListenerAdapter(messageListener);
-        var smtpServer = new SMTPServer(simpleMessageListenerAdapter);
-        configurator.configure(smtpServer);
-        return new SmtpServerImpl(smtpServer);
-    }
+  @Override
+  public SmtpServer create() {
+    var simpleMessageListenerAdapter = new SimpleMessageListenerAdapter(messageListener);
+    var smtpServer = new SMTPServer(simpleMessageListenerAdapter);
+    configurator.configure(smtpServer);
+    return new SmtpServerImpl(smtpServer);
+  }
 }
