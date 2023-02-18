@@ -1,5 +1,6 @@
 package de.gessnerfl.fakesmtp.server.impl;
 
+import java.util.Arrays;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
@@ -48,4 +49,13 @@ class RawData {
         return new MimeMessage(s, getContentAsStream());
     }
 
+    @Override
+    public String toString() {
+        return "RawData{" +
+            "from='" + from + '\'' +
+            ", to='" + to + '\'' +
+            ", content=" + Arrays.toString(content) +
+            ", mimeMessage=" + mimeMessage +
+            '}';
+    }
 }
