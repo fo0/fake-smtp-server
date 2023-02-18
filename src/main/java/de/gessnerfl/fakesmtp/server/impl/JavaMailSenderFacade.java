@@ -23,7 +23,7 @@ public class JavaMailSenderFacade {
 
   public void send(MimeMessage mimeMessage) {
     if (javaMailSender != null) {
-      logger.debug("mime message: {}", mimeMessage);
+      logMimeMessage(mimeMessage);
       javaMailSender.send(mimeMessage);
     } else {
       logger.error(ERROR_MESSAGE);
@@ -32,7 +32,7 @@ public class JavaMailSenderFacade {
 
   public void send(SimpleMailMessage message) {
     if (javaMailSender != null) {
-      logger.debug("simple mail message: {}", message);
+      logSimpleMailMessage(message);
       javaMailSender.send(message);
     } else {
       logger.error(ERROR_MESSAGE);
@@ -78,6 +78,18 @@ public class JavaMailSenderFacade {
     } catch (MessagingException | IOException e) {
       logger.error("Error logging MimeMessage: " + e.getMessage());
     }
+  }
+
+  public void logSimpleMailMessage(SimpleMailMessage message) {
+    if (!logger.isDebugEnabled()) {
+      return;
+    }
+    logger.debug("From: " + message.getFrom());
+    logger.debug("To: " + Arrays.toString(message.getTo()));
+    logger.debug("Cc: " + Arrays.toString(message.getCc()));
+    logger.debug("Bcc: " + Arrays.toString(message.getBcc()));
+    logger.debug("Subject: " + message.getSubject());
+    logger.debug("Text: " + message.getText());
   }
 
 }
