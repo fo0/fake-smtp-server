@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import org.thymeleaf.util.StringUtils;
 
 class RawData {
     private final String from;
@@ -38,10 +39,7 @@ class RawData {
     }
 
     public MimeMessage toMimeMessage() throws MessagingException {
-        if(mimeMessage == null){
-            mimeMessage = parseMimeMessage();
-        }
-        return mimeMessage;
+        return parseMimeMessage();
     }
 
     private MimeMessage parseMimeMessage() throws MessagingException {
@@ -54,7 +52,7 @@ class RawData {
         return "RawData{" +
             "from='" + from + '\'' +
             ", to='" + to + '\'' +
-            ", content=" + Arrays.toString(content) +
+            ", content-length=" + StringUtils.length(content) +
             ", mimeMessage=" + mimeMessage +
             '}';
     }
