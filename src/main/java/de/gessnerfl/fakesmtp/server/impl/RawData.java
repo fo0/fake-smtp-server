@@ -44,7 +44,9 @@ class RawData {
 
     private MimeMessage parseMimeMessage() throws MessagingException {
         var s = Session.getDefaultInstance(new Properties());
-        return new MimeMessage(s, getContentAsStream());
+        final MimeMessage message = new MimeMessage(s, getContentAsStream());
+        message.setRecipients(javax.mail.Message.RecipientType.TO, to);
+        return message;
     }
 
     @Override
